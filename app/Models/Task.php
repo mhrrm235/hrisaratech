@@ -21,4 +21,12 @@ class Task extends Model
     {
         return $this->belongsTo(Employee::class, 'assigned_to');
     }
+
+    /**
+     * Accessor helper for employee name so views can safely show a name.
+     */
+    public function getEmployeeNameAttribute()
+    {
+        return $this->employee?->fullname ?? 'Unknown Employee';
+    }
 }

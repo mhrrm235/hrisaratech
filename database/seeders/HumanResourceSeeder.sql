@@ -109,8 +109,8 @@ class HumanResourceSeeder extends Seeder
             ],
         ]);
 
-        // Seed Presences table (migration creates `presences`)
-        DB::table('presences')->insert([
+        // Seed Attendance table
+        DB::table('attendance')->insert([
             [
                 'employee_id' => 1, // John Doe
                 'check_in' => Carbon::parse('2025-02-10 09:00:00'),

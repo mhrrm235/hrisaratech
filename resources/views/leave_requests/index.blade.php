@@ -56,7 +56,7 @@
                     <tbody>
                         @foreach($leaveRequests as $leaveRequest)
                             <tr>
-                                <td>{{ $leaveRequest->employee->fullname }}</td>
+                                <td>{{ $leaveRequest->employee?->fullname ?? 'Unknown Employee' }}</td>
                                 <td>{{ $leaveRequest->leave_type }}</td>
                                 <td>
                                     @if($leaveRequest->status == 'pending')

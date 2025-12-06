@@ -37,7 +37,7 @@
         
                 <div class="mb-3">
                     <label class="form-label">Assigned To</label>
-                    <p>{{ $task->employee->fullname }}</p>
+                    <p>{{ $task->employee?->fullname ?? 'Unknown Employee' }}</p>
                 </div>
         
                 <div class="mb-3">

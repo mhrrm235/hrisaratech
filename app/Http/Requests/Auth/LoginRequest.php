@@ -5,6 +5,8 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -41,15 +43,73 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        $credentials = $this->only('email', 'password');
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+        // Try the normal Laravel attempt first (will handle standard hashed passwords)
+        try {
+            if (Auth::attempt($credentials, $this->boolean('remember'))) {
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+        } catch (\RuntimeException $e) {
+            // Some hashing drivers (or verify settings) may throw on algorithm mismatch.
+            // We'll fall through to try legacy verification below.
         }
 
-        RateLimiter::clear($this->throttleKey());
+        // Fallback: try to authenticate legacy/other-hash formats and migrate them to bcrypt.
+        $user = User::where('email', $this->string('email'))->first();
+
+        if ($user) {
+            $plain = $this->string('password');
+
+            // Plaintext stored password (dev/test databases sometimes use plaintext) — rehash and login.
+            if ($user->password === $plain) {
+                $user->password = Hash::make($plain);
+                $user->save();
+                Auth::login($user, $this->boolean('remember'));
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+
+            // MD5 legacy hashes
+            if (strlen($user->password) === 32 && md5($plain) === $user->password) {
+                $user->password = Hash::make($plain);
+                $user->save();
+                Auth::login($user, $this->boolean('remember'));
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+
+            // SHA1 legacy hashes
+            if (strlen($user->password) === 40 && sha1($plain) === $user->password) {
+                $user->password = Hash::make($plain);
+                $user->save();
+                Auth::login($user, $this->boolean('remember'));
+                RateLimiter::clear($this->throttleKey());
+                return;
+            }
+
+            // As last attempt, try password_verify (handles non-bcrypt formatted hashes like Argon, etc.)
+            try {
+                if (password_verify($plain, $user->password)) {
+                    // If password_verify succeeds but Laravel threw earlier due to algorithm verify,
+                    // rehash into Laravel's default hasher so subsequent logins use Laravel Hash::check.
+                    $user->password = Hash::make($plain);
+                    $user->save();
+                    Auth::login($user, $this->boolean('remember'));
+                    RateLimiter::clear($this->throttleKey());
+                    return;
+                }
+            } catch (\Throwable $e) {
+                // ignore and continue to fail below
+            }
+        }
+
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
     }
 
     /**

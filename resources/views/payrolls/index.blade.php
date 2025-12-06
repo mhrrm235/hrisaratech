@@ -60,7 +60,7 @@
                         @foreach($payrolls as $payroll)
 
                             <tr>
-                                <td>{{ $payroll->employee->fullname }}</td>
+                                <td>{{ $payroll->employee?->fullname ?? 'Unknown Employee' }}</td>
                                 <td>{{ 'Rp ' . number_format($payroll->salary, 0, ',', '.') }}</td>
                                 <td>{{ 'Rp ' . number_format($payroll->bonuses ?? 0, 0, ',', '.') }}</td>
                                 <td>{{ 'Rp ' . number_format($payroll->deductions ?? 0, 0, ',', '.') }}</td>

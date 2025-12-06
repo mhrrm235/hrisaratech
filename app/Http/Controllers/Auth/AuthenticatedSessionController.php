@@ -28,6 +28,24 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Set role & employee id into session so views (sidebar) can check session('role')
+        // This ensures menus that rely on session('role') will show after login.
+        try {
+            $user = \Illuminate\Support\Facades\Auth::user();
+            if ($user) {
+                $employeeId = $user->employee_id ?? null;
+                if ($employeeId) {
+                    $employee = \App\Models\Employee::find($employeeId);
+                    if ($employee && $employee->role) {
+                        $request->session()->put('role', $employee->role->title);
+                        $request->session()->put('employee_id', $employee->id);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // don't break login if session can't be set; menu will still safely fallback
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

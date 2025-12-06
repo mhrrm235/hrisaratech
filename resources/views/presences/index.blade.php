@@ -63,7 +63,7 @@
                     <tbody>
                         @foreach($attendances as $attendance)
                             <tr>
-                                <td>{{ $attendance->employee->fullname }}</td>
+                                <td>{{ $attendance->employee?->fullname ?? 'Unknown Employee' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($attendance->check_in)->format('d, M Y H:i:s') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($attendance->check_out)->format('d, M Y H:i:s') }}</td>
                                 

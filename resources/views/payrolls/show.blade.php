@@ -41,7 +41,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label class="form-label">Employee</label>
-                                <p>{{ $payroll->employee->fullname }}</p>
+                                <p>{{ $payroll->employee?->fullname ?? 'Unknown Employee' }}</p>
                             </div>
 
                             <div class="form-group">

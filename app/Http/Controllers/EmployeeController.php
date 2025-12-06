@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\User;
 use App\Models\Department;
 use App\Models\Role;
 use App\Models\Presence;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -42,7 +45,7 @@ class EmployeeController extends Controller
             'salary' => 'required|numeric',
         ]);
 
-        Employee::create([
+        $employee = Employee::create([
             'fullname' => $request->fullname,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
@@ -55,7 +58,33 @@ class EmployeeController extends Controller
             'salary' => $request->salary
         ]);
 
-        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
+        // Auto-create a User account for this employee if not exists
+        $user = User::where('email', $employee->email)->first();
+        $generatedPassword = null;
+
+        if (! $user) {
+            $generatedPassword = Str::random(12); // random password for new user
+
+            User::create([
+                'name' => $employee->fullname,
+                'email' => $employee->email,
+                'password' => Hash::make($generatedPassword),
+                'employee_id' => (string) $employee->id,
+            ]);
+        } else {
+            // Ensure employee id is linked
+            if (empty($user->employee_id)) {
+                $user->employee_id = (string) $employee->id;
+                $user->save();
+            }
+        }
+
+        $message = 'Employee created successfully.';
+        if ($generatedPassword) {
+            $message .= " User account created (email: {$employee->email}). Password: {$generatedPassword} — please change after first login.";
+        }
+
+        return redirect()->route('employees.index')->with('success', $message);
     }
 
     // Display the specified employee
@@ -96,7 +125,18 @@ class EmployeeController extends Controller
         ]);
 
         $employee = Employee::findOrFail($id);
+        $oldEmail = $employee->email;
         $employee->update($request->all());
+
+        // If email changed, update user record if exists
+        if ($oldEmail !== $employee->email) {
+            $user = User::where('employee_id', $id)->orWhere('email', $oldEmail)->first();
+            if ($user) {
+                $user->email = $employee->email;
+                $user->name = $employee->fullname;
+                $user->save();
+            }
+        }
 
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
@@ -105,6 +145,12 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         $employee = Employee::findOrFail($id);
+        // When an employee is deleted, also delete their user account
+        $user = User::where('employee_id', $employee->id)->first();
+        if ($user) {
+            $user->delete();
+        }
+
         $employee->delete();
 
         return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');

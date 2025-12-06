@@ -58,7 +58,7 @@
                         @foreach($tasks as $task)
                             <tr>
                                 <td>{{ $task->title }}</td>
-                                <td>{{ $task->employee->fullname }}</td>
+                                <td>{{ $task->employee?->fullname ?? 'Unknown Employee' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($task->due_date)->format('d F Y') }}</td>
                                 <td>
                                     @if($task->status == 'pending')

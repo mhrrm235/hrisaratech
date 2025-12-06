@@ -128,9 +128,10 @@
                                             <td class="col-3">
                                                 <div class="d-flex align-items-center">
                                                     <div class="avatar avatar-md">
-                                                        <img src="https://ui-avatars.com/api/?name={{ $task->employee->fullname }}&background=random">
+                                                        @php $emp = $task->employee; @endphp
+                                                        <img src="https://ui-avatars.com/api/?name={{ $emp?->fullname ?? 'Unknown' }}&background=random">
                                                     </div>
-                                                    <p class="font-bold ms-3 mb-0">{{ $task->employee->fullname }}</p>
+                                                    <p class="font-bold ms-3 mb-0">{{ $emp?->fullname ?? 'Unknown Employee' }}</p>
                                                 </div>
                                             </td>
                                             <td class="col-auto">

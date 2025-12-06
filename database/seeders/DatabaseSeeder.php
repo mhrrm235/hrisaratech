@@ -19,5 +19,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Ensure HR account and example users are present
+        $this->call(\Database\Seeders\HumanResourceSeeder::class);
+        $this->call(\Database\Seeders\CreateHrCredentialsSeeder::class);
+        // Create users for any employees that do not yet have one
+        $this->call(\Database\Seeders\CreateUsersForEmployeesSeeder::class);
     }
 }
