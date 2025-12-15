@@ -13,17 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        // Ensure HR account and example users are present
-        $this->call(\Database\Seeders\HumanResourceSeeder::class);
-        $this->call(\Database\Seeders\CreateHrCredentialsSeeder::class);
-        // Create users for any employees that do not yet have one
-        $this->call(\Database\Seeders\CreateUsersForEmployeesSeeder::class);
+        // Run comprehensive data sync command which creates all dummy data
+        // This includes roles, departments, employees, KPIs, templates, etc.
+        \Artisan::call('sync:dummy-data');
     }
 }

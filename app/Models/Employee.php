@@ -36,4 +36,14 @@ class Employee extends Model
     {
         return $this->belongsTo(Role::class);
     }
+
+    /**
+     * Relationship: this employee has one user account.
+     *
+     * users.employee_id -> employees.id
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'employee_id', 'id');
+    }
 }

@@ -20,7 +20,6 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item">Employees</li>
-                        <li class="breadcrumb-item active" aria-current="page">Index</li>
                     </ol>
                 </nav>
             </div>
@@ -92,8 +91,8 @@
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select name="status" id="status" class="form-control" required>
-                            <option value="Inactive">Inactive</option>
-                            <option value="non active">Non Active</option>
+                            <option value="Active">Active</option>
+                            <option value="Non active">Non Active</option>
                         </select>
                     </div>
         

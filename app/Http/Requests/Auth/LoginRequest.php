@@ -57,10 +57,11 @@ class LoginRequest extends FormRequest
         }
 
         // Fallback: try to authenticate legacy/other-hash formats and migrate them to bcrypt.
-        $user = User::where('email', $this->string('email'))->first();
+        $user = User::where('email', (string) $this->string('email'))->first();
 
         if ($user) {
-            $plain = $this->string('password');
+            // Always work with a plain string here, not a Stringable instance
+            $plain = (string) $this->string('password');
 
             // Plaintext stored password (dev/test databases sometimes use plaintext) — rehash and login.
             if ($user->password === $plain) {

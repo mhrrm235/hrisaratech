@@ -38,7 +38,7 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('adminhr@mail.com|127.0.0.1', 'i:2;', 1764054993),
+('m|127.0.0.1', 'i:2;', 1764054993),
 ('adminhr@mail.com|127.0.0.1:timer', 'i:1764054993;', 1764054993),
 ('gillian.oconner@example.com|127.0.0.1', 'i:1;', 1764056457),
 ('gillian.oconner@example.com|127.0.0.1:timer', 'i:1764056457;', 1764056457);

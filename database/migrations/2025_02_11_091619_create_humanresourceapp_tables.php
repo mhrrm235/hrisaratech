@@ -12,37 +12,31 @@ return new class extends Migration
     public function up()
     {
         // Create departments table
-        if (! Schema::hasTable('departments')) {
-            Schema::create('departments', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
-            });
-        }
+        });
 
         // Create roles table
-        if (! Schema::hasTable('roles')) {
-            Schema::create('roles', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            });
-        }
+        });
 
         // Create employees table
-        if (! Schema::hasTable('employees')) {
-            Schema::create('employees', function (Blueprint $table) {
+        Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('fullname');
             $table->string('email')->unique();
             $table->string('phone_number');
             $table->text('address');
-            // Make birth_date and hire_date nullable to avoid invalid default value errors
             $table->timestamp('birth_date')->nullable();
             $table->timestamp('hire_date')->nullable();
             $table->foreignId('department_id')->constrained('departments');
@@ -51,26 +45,22 @@ return new class extends Migration
             $table->decimal('salary', 10, 2);
             $table->timestamps();
             $table->softDeletes();
-            });
-        }
+        });
 
         // Create tasks table
-        if (! Schema::hasTable('tasks')) {
-            Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('assigned_to')->constrained('employees');
+            $table->foreignId('assigned_to')->nullable()->constrained('employees');
             $table->timestamp('due_date')->nullable();
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
-            });
-        }
+        });
 
         // Create payroll table
-        if (! Schema::hasTable('payroll')) {
-            Schema::create('payroll', function (Blueprint $table) {
+        Schema::create('payroll', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
             $table->decimal('salary', 10, 2);
@@ -80,12 +70,10 @@ return new class extends Migration
             $table->timestamp('pay_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            });
-        }
+        });
 
         // Create presences table
-        if (! Schema::hasTable('presences')) {
-            Schema::create('presences', function (Blueprint $table) {
+        Schema::create('presences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
             $table->timestamp('check_in')->nullable();
@@ -94,12 +82,10 @@ return new class extends Migration
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
-            });
-        }
+        });
 
         // Create leave_requests table
-        if (! Schema::hasTable('leave_requests')) {
-            Schema::create('leave_requests', function (Blueprint $table) {
+        Schema::create('leave_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
             $table->string('leave_type');
@@ -108,8 +94,7 @@ return new class extends Migration
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
-            });
-        }
+        });
     }
 
     public function down()

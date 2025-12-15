@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
         'employee_id'
     ];
 
@@ -49,12 +48,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the employee data and role.
+     * Relationship: this user belongs to an employee record.
      *
-     * @return string
+     * users.employee_id -> employees.id
      */
     public function employee()
     {
-        return $this->hasOne(Employee::class);
+        return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 }

@@ -32,7 +32,7 @@
             <div class="card-body" >
                 <div id="print-area">
                     <div>
-                        <h5>PT. Codepolitan Integrasi Indonesia</h5>
+                        <h5>PT. Aratech Nusantara Indonesia</h5>
                         <p>Jl. Jend. Sudirman No. 55, Jakarta Pusat</p>
                         <hr>
                     </div>

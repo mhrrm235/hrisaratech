@@ -29,7 +29,7 @@
                             <a href="index.html">
                                 <svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
                                     <text x="10" y="40" font-family="Arial" font-weight="bold" font-size="40" fill="#435EBE">
-                                      HRIS Aratech.
+                                      HRIS .
                                     </text>
                                 </svg>
                             </a>
@@ -71,7 +71,7 @@
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
                         
-                        @if (session('role')  == 'HR')
+                        @if (session('role')  == 'Power User' || session('role')  == 'HR')
                        
                         <li class="sidebar-item">
                             <a href="{{ url('/dashboard') }}" class='sidebar-link'>
@@ -121,9 +121,120 @@
                                 <span>Leave Requests</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/inventory-categories') }}" class='sidebar-link'>
+                                <i class="bi bi-tag-fill"></i>
+                                <span>Inventory Categories</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/inventories') }}" class='sidebar-link'>
+                                <i class="bi bi-boxes"></i>
+                                <span>Inventories</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/inventory-usage-logs') }}" class='sidebar-link'>
+                                <i class="bi bi-clock-history"></i>
+                                <span>Usage Logs</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letters') }}" class='sidebar-link'>
+                                <i class="bi bi-envelope-fill"></i>
+                                <span>Letters</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letter-templates') }}" class='sidebar-link'>
+                                <i class="bi bi-file-text-fill"></i>
+                                <span>Letter Templates</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letter-configurations') }}" class='sidebar-link'>
+                                <i class="bi bi-gear-fill"></i>
+                                <span>Letter Config</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letter-archives') }}" class='sidebar-link'>
+                                <i class="bi bi-archive-fill"></i>
+                                <span>Letter Archives</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/signature-logs') }}" class='sidebar-link'>
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Signature Logs</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/kpi/dashboard') }}" class='sidebar-link'>
+                                <i class="bi bi-graph-up"></i>
+                                <span>KPI Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/reports/executive') }}" class='sidebar-link'>
+                                <i class="bi bi-briefcase"></i>
+                                <span>Executive Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/reports/monthly-recap') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-text"></i>
+                                <span>Monthly Report</span>
+                            </a>
+                        </li>
                         @endif
 
-                        @if (session('role')  == 'Developer')
+                        @if (session('role') == 'Manager')
+                        <li class="sidebar-item">
+                            <a href="{{ url('/dashboard') }}" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/tasks') }}" class='sidebar-link'>
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Tasks</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/leave-requests') }}" class='sidebar-link'>
+                                <i class="bi bi-shift-fill"></i>
+                                <span>Leave Requests</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/kpi/team') }}" class='sidebar-link'>
+                                <i class="bi bi-graph-up"></i>
+                                <span>Team KPI</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/kpi/department') }}" class='sidebar-link'>
+                                <i class="bi bi-building"></i>
+                                <span>Department KPI</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/reports/monthly-recap') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-text"></i>
+                                <span>Monthly Report</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letters') }}" class='sidebar-link'>
+                                <i class="bi bi-envelope-fill"></i>
+                                <span>Letters</span>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (session('role')  == 'Power User' || session('role')  == 'Developer')
                         <li class="sidebar-item">
                             <a href="{{ url('/presences') }}" class='sidebar-link'>
                                 <i class="bi bi-table"></i>
@@ -148,7 +259,46 @@
                                 <span>Leave Requests</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/inventory-usage-logs') }}" class='sidebar-link'>
+                                <i class="bi bi-clock-history"></i>
+                                <span>Inventory Usage</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letters') }}" class='sidebar-link'>
+                                <i class="bi bi-envelope-fill"></i>
+                                <span>Letters</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letter-archives') }}" class='sidebar-link'>
+                                <i class="bi bi-archive-fill"></i>
+                                <span>Letter Archives</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/signature-logs') }}" class='sidebar-link'>
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Signature Logs</span>
+                            </a>
+                        </li>
                         @endif
+
+                        <!-- Common menu for all users -->
+                        <li class="sidebar-title">Personal</li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/kpi/dashboard') }}" class='sidebar-link'>
+                                <i class="bi bi-graph-up"></i>
+                                <span>My KPI</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url('/letters') }}" class='sidebar-link'>
+                                <i class="bi bi-envelope-fill"></i>
+                                <span>Letters</span>
+                            </a>
+                        </li>
                         
                         <li class="sidebar-item">
                             <a href="{{ url('/logout') }}" class='sidebar-link'>
@@ -168,10 +318,10 @@
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
-                        <p>2023 &copy; Mazer</p>
+                        <p>2025 &copy; PT Aratech Nusantara Indonesia</p>
                     </div>
                     <div class="float-end">
-                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span> by <a href="https://saugi.me">Saugi</a></p>
+                        <p>Crafted with <span class="text-danger"></span> by <a href="https:/aratechnology.id">PT Aratech Nusantara Indonesia</a></p>
                     </div>
                 </div>
             </footer>

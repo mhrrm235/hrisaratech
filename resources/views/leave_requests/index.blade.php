@@ -31,7 +31,6 @@
         <div class="card">
             
             <div class="card-body">
-
                 <div class="d-flex">
                     <a href="{{ route('leave-requests.create') }}" class="btn btn-primary mb-3 ms-auto">New Leave Request</a>
                 </div>
