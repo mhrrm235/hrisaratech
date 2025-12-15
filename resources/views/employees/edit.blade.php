@@ -69,7 +69,7 @@
         
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
-                        <input type="text" name="address" class="form-control" id="address" value="{{ old('address', $employee->address) }}" }}>
+                        <input type="text" name="address" class="form-control" id="address" value="{{ old('address', $employee->address) }}" required>
                     </div>
         
                     <div class="mb-3">
